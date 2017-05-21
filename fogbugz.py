@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import sys
 try:
     from email.generator import _make_boundary
@@ -11,12 +11,12 @@ except ImportError:
 try:
     from io import BytesIO
 except ImportError:
-    from StringIO import StringIO as BytesIO
+    from io import StringIO as BytesIO
 
 try:
-    basestring
+    str
 except NameError:
-    basestring = str
+    str = str
 
 from bs4 import BeautifulSoup, CData
 
@@ -114,7 +114,7 @@ class FogBugz:
         crlf = '\r\n'
         buf = BytesIO()
 
-        for k, v in fields.items():
+        for k, v in list(fields.items()):
             if DEBUG:
                 print("field: %s: %s"% (repr(k), repr(v)))
             lines = [
@@ -127,7 +127,7 @@ class FogBugz:
             buf.write(crlf.join(lines).encode('utf-8'))
 
         n = 0
-        for f, h in files.items():
+        for f, h in list(files.items()):
             n += 1
             lines = [
                 '--' + BOUNDARY,
